@@ -10,16 +10,20 @@ const port = process.env.PORT || process.env.NODE_PORT || 3000;
 // urlStruct
 const urlStruct = {
   GET:
-{
-  '/': htmlHandler.getIndex,
-  '/style.css': htmlHandler.getCSS,
-  '/getDate': jsonHandler.getDate,
-// '/getRandomJoke' :
-},
-  POST: {
-    // '/addJoke' : handlerAddJoke,
+  {
+    '/': htmlHandler.getIndex,
+    '/style.css': htmlHandler.getCSS,
+    '/getDate': jsonHandler.getDate,
+    '/getNumber': jsonHandler.getNumber,
   },
-  HEAD: {},
+  POST:
+  {
+
+  },
+  HEAD:
+  {
+
+  },
   notFound: jsonHandler.notFound,
 };
 
@@ -30,12 +34,13 @@ const onRequest = (request, response) => {
   const httpMethod = request.method;
   const params = query.parse(parsedURL.query);
 
+  /*
   console.log(`pathname = ${pathname}`);
   console.log(`httpMethod = ${httpMethod}`);
   console.log(`params = ${Object.keys(params)}`);
-
+*/
   if (urlStruct[httpMethod][pathname]) {
-    urlStruct[httpMethod][pathname](request, response);// , params);
+    urlStruct[httpMethod][pathname](request, response, params);
   } else {
     urlStruct.notFound(request, response);
   }

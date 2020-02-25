@@ -9,12 +9,19 @@
 <body>
 <h1>Nick's sad prototype :- (</h1>
 <section>
+  <h2>Translate the Date</h2>
 	<button id="dateButton">Get the date!</button>
 </section>
 <hr>
-
-<h2>Date:</h2>
-<section id="dateInfo"></section>
+<section>
+  <h2>Translate a number</h2>
+	<input type="text" placeholder = "Enter numbers here!" id = "numInput"> 
+	<button id="numButton">Translate!</button>
+</section>
+<hr>
+<h2 id = "title">Response:</h2>
+<section id="responseInfo"></section>
+<hr>
 
 <script>
   const sendAjax = (url) => 
@@ -28,15 +35,15 @@
 
   const handleResponse = (xhr) => 
   {
-    const obj = JSON.parse(xhr.response);
+    const response = JSON.parse(xhr.response);
 
-    console.log(obj);
+    //Clear the info
+    responseInfo.innerHTML = "";
 
-    dateInfo.innerHTML = `<p>${obj.date}</p>`;
-    dateInfo.innerHTML = dateInfo.innerHTML + `\n<p>${obj.kanji}</p>`;
-    dateInfo.innerHTML = dateInfo.innerHTML + `\n<p>${obj.reading}</p>`;
-    dateInfo.innerHTML = dateInfo.innerHTML + `\n<p>${obj.english}</p>`;
-    dateInfo.innerHTML = dateInfo.innerHTML + `\n<p>${obj.translation}</p>`;
+    for(entry in response)
+    {
+      responseInfo.innerHTML = responseInfo.innerHTML + `\n<p>${response[entry]}</p>`;
+    }
   }
 
   window.onload = () =>
@@ -44,7 +51,13 @@
     dateButton.onclick = () => 
     {
       sendAjax("/getDate");
+      title.innerHTML = "Date:";
     };		
+    numButton.onclick = () => 
+    {
+      sendAjax("/getNumber?number=" + numInput.value);
+      title.innerHTML = "Number:";
+    };
   }
 	</script>
 
