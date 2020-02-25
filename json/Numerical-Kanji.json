@@ -1,0 +1,15 @@
+{
+    "numbers":
+    [
+    {"num":"1","kanji":"一","reading":"いち","english":"ichi","sequence":"first"},
+    {"num":"2","kanji":"二","reading":"に","english":"ni","sequence":"second"},
+    {"num":"3","kanji":"三","reading":"さん","english":"san","sequence":"third"},
+    {"num":"4","kanji":"四","reading":"いち","english":"yon","sequence":"fourth"},
+    {"num":"5","kanji":"五","reading":"いち","english":"go","sequence":"fifth"},
+    {"num":"6","kanji":"六","reading":"いち","english":"roku","sequence":"sixth"},
+    {"num":"7","kanji":"七","reading":"いち","english":"nana","sequence":"seventh"},
+    {"num":"8","kanji":"八","reading":"いち","english":"hachi","sequence":"eighth"},
+    {"num":"9","kanji":"九","reading":"いち","english":"kyu","sequence":"ninth"},
+    {"num":"10","kanji":"十","reading":"いち","english":"ju","sequence":"tenth"}
+	]
+}
