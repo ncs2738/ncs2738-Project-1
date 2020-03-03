@@ -446,32 +446,39 @@ const handler = new Vue(
             //Get the response and parse it
             if(xhr.response)
             {
-                const response = JSON.parse(xhr.response);
-                //The response was for the schedule, so...
-                if (destination === 0) {
-                    //Clear it
-                  this.schedule = [];
-                  //Read in the JSON for the schedule
-                  const tmp = response.schedule;
-                  //Parse it, and set the schedule to it
-                  this.schedule = JSON.parse(tmp);
-                  this.status = "Updated your Schedule!"
-                } else {
-                    //The search was either for date or number
-                  const results = [];
-            
-                  //Loop through and push the entries
-                  for (const reply of Object.keys(response)) {
-                    results.push(`${response[reply]}`);
+                if(xhr.status !== 400)
+                {
+                      const response = JSON.parse(xhr.response);
+                    //The response was for the schedule, so...
+                    if (destination === 0) {
+                        //Clear it
+                      this.schedule = [];
+                      //Read in the JSON for the schedule
+                      const tmp = response.schedule;
+                      //Parse it, and set the schedule to it
+                      this.schedule = JSON.parse(tmp);
+                      this.status = "Updated your Schedule!"
+                    } else {
+                        //The search was either for date or number
+                      const results = [];
+                
+                      //Loop through and push the entries
+                      for (const reply of Object.keys(response)) {
+                        results.push(`${response[reply]}`);
+                      }
+                
+                      ///Update the models; 1 is for numbers, 2 is for dates
+                      if (destination === 1) {
+                        this.numOutput = results;
+                      } else if (destination === 2) {
+                        this.dateOutput = results;
+                      }  
                   }
-            
-                  ///Update the models; 1 is for numbers, 2 is for dates
-                  if (destination === 1) {
-                    this.numOutput = results;
-                  } else if (destination === 2) {
-                    this.dateOutput = results;
-                  }  
-              }
+                }
+                else
+                {
+                  this.status = "You haven't updated anything!"
+                }
             }
             else
             {
