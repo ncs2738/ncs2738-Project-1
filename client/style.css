@@ -8,6 +8,11 @@ body, html
     align-content: center;
 }
 
+#loginContainer, #loginNav
+{
+    visibility: hidden;
+}
+
 #page
 {
     padding-top: 10vh;
@@ -19,26 +24,6 @@ body, html
     align-self: center;
     align-items: center;
     text-align: center;
-}
-
-.container {
-    display: flex;
-    margin-left: auto;
-    margin-right: auto;
-    justify-content: center;
-  }
-
-.contents
-{
-    flex-basis: 40%;
-    background:rgb(65, 71, 77);
-    color:rgb(252, 252, 252);
-    border: 15px black double;
-    border-radius: 10px;
-
-    font-family: 'Jua', sans-serif;
-    font-size: 14pt;
-    width:60%;
 }
 
 .category

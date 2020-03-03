@@ -68,12 +68,12 @@ const handler = new Vue(
   timeX: '', //Variables for getting the schedule's times
   timeY: '',
   loggedIn: false, // variable used for seeing if the user is logged in or nor.
-  status: 'Please search for kanji!', // Variable used for displaying the current state of the app
+  status: "Here's a default schedule!", // Variable used for displaying the current state of the app
   numInput: '', //Get the number searched
   numOutput: '', //Output it's translations
   dateOutput: '', //Output for date translations
-  loginStatus: "", //Used for showing the status of the login
-  schedule: [{startTime: 1400, endTime: 1515, time: "2:00 PM - 3:15 PM", entry: "ウェブ・デ"},
+  loginStatus: "Please Log-in to use my API!", //Used for showing the status of the login
+  schedule: [{startTime: 1400, endTime: 1515, time: "2:00 PM - 3:15 PM", entry: "ウェブ・デブ"},
   {startTime: 1700, endTime: 1800, time: "5:00 PM - 6:00 PM", entry: "たべます"}], // Array for holding the current schedule
 
   // ########### TYPING VARIABLERS ###########
@@ -428,8 +428,11 @@ const handler = new Vue(
               //The user has successfully logged in
             if (xhr.status === 200 || xhr.status === 201) {
                 //Remove the login section, and set the login flag to true
-              document.getElementById(destination).innerHTML = `Logged in as ${this.username}!`;
+              document.getElementById(destination).innerHTML = "";
+              this.loginStatus = `Logged in as user ${this.username}!`;
               this.loggedIn = true;
+              document.body.querySelector("#loginContainer").style.visibility = "visible";
+              document.body.querySelector("#loginNav").style.visibility = "visible";
             }
             else
             {
@@ -441,30 +444,38 @@ const handler = new Vue(
           //Handles the responses
           handleResponse(xhr, destination) {
             //Get the response and parse it
-            const response = JSON.parse(xhr.response);
-            //The response was for the schedule, so...
-            if (destination === 0) {
-                //Clear it
-              this.schedule = [];
-              //Read in the JSON for the schedule
-              const tmp = response.schedule;
-              //Parse it, and set the schedule to it
-              this.schedule = JSON.parse(tmp);
-            } else {
-                //The search was either for date or number
-              const results = [];
-        
-              //Loop through and push the entries
-              for (const reply of Object.keys(response)) {
-                results.push(`${response[reply]}`);
+            if(xhr.response)
+            {
+                const response = JSON.parse(xhr.response);
+                //The response was for the schedule, so...
+                if (destination === 0) {
+                    //Clear it
+                  this.schedule = [];
+                  //Read in the JSON for the schedule
+                  const tmp = response.schedule;
+                  //Parse it, and set the schedule to it
+                  this.schedule = JSON.parse(tmp);
+                  this.status = "Updated your Schedule!"
+                } else {
+                    //The search was either for date or number
+                  const results = [];
+            
+                  //Loop through and push the entries
+                  for (const reply of Object.keys(response)) {
+                    results.push(`${response[reply]}`);
+                  }
+            
+                  ///Update the models; 1 is for numbers, 2 is for dates
+                  if (destination === 1) {
+                    this.numOutput = results;
+                  } else if (destination === 2) {
+                    this.dateOutput = results;
+                  }  
               }
-        
-              ///Update the models; 1 is for numbers, 2 is for dates
-              if (destination === 1) {
-                this.numOutput = results;
-              } else if (destination === 2) {
-                this.dateOutput = results;
-              }
+            }
+            else
+            {
+              this.status = "You haven't updated anything!"
             }
           },
         
@@ -554,13 +565,22 @@ const handler = new Vue(
           getSchedule() {
             const formData = `/getSchedule?username=${this.username}`;
             this.sendAjax(formData, 0, false);
+            this.status = "Finding your Schedule..."
           },
         
           //Post your current schedule to the server and save it.
           postSchedule() {
-            const jsonSchedule = JSON.stringify(this.schedule);
+            if(this.schedule.length > 0)
+            {
+              const jsonSchedule = JSON.stringify(this.schedule);
             const formData = `username=${this.username}&schedule=${jsonSchedule}`;
             this.sendPost('/addSchedule', formData, 0, false);
+            this.status = "Saving your Schedule..."
+            }
+            else
+            {
+              this.status = "Please fill out your schedule before posting it!"
+            }
           },
         
           //Takes the time inputs and finds if they are AM or PM
@@ -614,6 +634,7 @@ const handler = new Vue(
         deleteSchedule()
         {
             this.schedule = [];
+            this.status = "Cleared your Schedule..."
         }
     },
   },

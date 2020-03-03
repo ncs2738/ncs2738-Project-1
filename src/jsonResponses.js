@@ -77,88 +77,91 @@ const getNumber = (request, response, input) => {
   if (request.method === 'GET') {
     // Create a counter
     const counter = { counter: 0 };
-    // Check if the number's actually good or not
-    if (!Number.isNaN(input.number)) {
-      // translate the string back into a number, and get it's length
-      const numString = input.number.toString();
-      const { length } = numString;
-      responseJSON.num = input.number;
-      // Create the JSON variables
-      responseJSON.kanji = '';
-      responseJSON.reading = '';
-      responseJSON.english = '';
+    // Check if the input's actually valid or not
 
-      // Loop through the number
-      for (let i = length; i >= 1; i--) {
-        // Make sure there are no 0's; They are not counted in japanese
-        if (numString[i - 1] !== '0') {
-          // Use the counter to start at the first number on the right
-          // Case 0 would be 1, case 1 would be 10, case 2 would be 100, etc
-          switch (counter.counter) {
-            case 9:
-              appendNumbers(0, numerics.powers, responseJSON, false);
-              appendNumbers(4, numerics.powers, responseJSON, false);
-              appendNumbers(numString[i - 1], numerics.numbers, responseJSON, false);
-              break;
+    const checker = parseInt(input.number, 10);
 
-            case 8:
-              appendNumbers(4, numerics.powers, responseJSON, false);
-              appendNumbers(numString[i - 1], numerics.numbers, responseJSON, false);
-              break;
-
-            case 7:
-              appendNumbers(2, numerics.powers, responseJSON, true);
-              appendNumbers(numString[i - 1], numerics.numbers, responseJSON, false);
-              break;
-
-            case 6:
-              appendNumbers(1, numerics.powers, responseJSON, false);
-              appendNumbers(numString[i - 1], numerics.numbers, responseJSON, true);
-              break;
-
-            case 5:
-              appendNumbers(0, numerics.powers, responseJSON, false);
-              appendNumbers(numString[i - 1], numerics.numbers, responseJSON, false);
-              break;
-
-            case 4:
-              appendNumbers(3, numerics.powers, responseJSON, false);
-              appendNumbers(numString[i - 1], numerics.numbers, responseJSON, false);
-              break;
-
-            case 3:
-              appendNumbers(2, numerics.powers, responseJSON, false);
-              appendNumbers(numString[i - 1], numerics.numbers, responseJSON, true);
-              break;
-
-            case 2:
-              appendNumbers(1, numerics.powers, responseJSON, false);
-              appendNumbers(numString[i - 1], numerics.numbers, responseJSON, true);
-              break;
-
-            case 1:
-              appendNumbers(0, numerics.powers, responseJSON, false);
-              appendNumbers(numString[i - 1], numerics.numbers, responseJSON, true);
-              break;
-
-            case 0:
-              appendNumbers(numString[i - 1], numerics.numbers, responseJSON, false);
-              break;
-
-            default:
-              responseJSON.english += ' ';
-              break;
-          }
-        }
-        // increment the counter
-        counter.counter++;
-      }
-    } else {
-      // An invalid number was entered
+    if (Number.isNaN(checker)) {
+      // Letters were entered
       // Return a bad request
       responseJSON.id = 'badRequest';
       responseJSON.message = 'Please enter in a valid number!';
       return respondJSON(request, response, 400, responseJSON);
+    }
+
+    // translate the string back into a number, and get it's length
+    const numString = input.number.toString();
+    const { length } = numString;
+    responseJSON.num = input.number;
+    // Create the JSON variables
+    responseJSON.kanji = '';
+    responseJSON.reading = '';
+    responseJSON.english = '';
+
+    // Loop through the number
+    for (let i = length; i >= 1; i--) {
+      // Make sure there are no 0's; They are not counted in japanese
+      if (numString[i - 1] !== '0') {
+        // Use the counter to start at the first number on the right
+        // Case 0 would be 1, case 1 would be 10, case 2 would be 100, etc
+        switch (counter.counter) {
+          case 9:
+            appendNumbers(0, numerics.powers, responseJSON, false);
+            appendNumbers(4, numerics.powers, responseJSON, false);
+            appendNumbers(numString[i - 1], numerics.numbers, responseJSON, false);
+            break;
+
+          case 8:
+            appendNumbers(4, numerics.powers, responseJSON, false);
+            appendNumbers(numString[i - 1], numerics.numbers, responseJSON, false);
+            break;
+
+          case 7:
+            appendNumbers(2, numerics.powers, responseJSON, true);
+            appendNumbers(numString[i - 1], numerics.numbers, responseJSON, false);
+            break;
+
+          case 6:
+            appendNumbers(1, numerics.powers, responseJSON, false);
+            appendNumbers(numString[i - 1], numerics.numbers, responseJSON, true);
+            break;
+
+          case 5:
+            appendNumbers(0, numerics.powers, responseJSON, false);
+            appendNumbers(numString[i - 1], numerics.numbers, responseJSON, false);
+            break;
+
+          case 4:
+            appendNumbers(3, numerics.powers, responseJSON, false);
+            appendNumbers(numString[i - 1], numerics.numbers, responseJSON, false);
+            break;
+
+          case 3:
+            appendNumbers(2, numerics.powers, responseJSON, false);
+            appendNumbers(numString[i - 1], numerics.numbers, responseJSON, true);
+            break;
+
+          case 2:
+            appendNumbers(1, numerics.powers, responseJSON, false);
+            appendNumbers(numString[i - 1], numerics.numbers, responseJSON, true);
+            break;
+
+          case 1:
+            appendNumbers(0, numerics.powers, responseJSON, false);
+            appendNumbers(numString[i - 1], numerics.numbers, responseJSON, true);
+            break;
+
+          case 0:
+            appendNumbers(numString[i - 1], numerics.numbers, responseJSON, false);
+            break;
+
+          default:
+            responseJSON.english += ' ';
+            break;
+        }
+      }
+      // increment the counter
+      counter.counter++;
     }
   } else {
     // The method was not Get, so return a success
