@@ -3,63 +3,119 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
-	<title>Nick's sad prototype 1</title>	
+  <title>Nick's sad prototype 1</title>	
+  
+      <!-- Load required Bootstrap and BootstrapVue CSS -->
+      <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+      <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css" />
+      <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  
+      <!-- Load polyfills to support older browsers -->
+      <script src="https://polyfill.io/v3/polyfill.min.js?features=es2015%2CIntersectionObserver" crossorigin="anonymous"></script>
+  
+      <!-- Load Vue followed by BootstrapVue -->
+      <script src="https://unpkg.com/vue@latest/dist/vue.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js"></script>
+  
+      <script src="https://unpkg.com/vue@latest/dist/vue.min.js"></script>
+      <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js"></script>
+
+      <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 </head>
 
 <body>
-<h1>Nick's sad prototype :- (</h1>
-<section>
-  <h2>Translate the Date</h2>
-	<button id="dateButton">Get the date!</button>
-</section>
-<hr>
-<section>
-  <h2>Translate a number</h2>
-	<input type="text" placeholder = "Enter numbers here!" id = "numInput"> 
-	<button id="numButton">Translate!</button>
-</section>
-<hr>
-<h2 id = "title">Response:</h2>
-<section id="responseInfo"></section>
-<hr>
+  <div id = "page">
+    <h1>Nick's sad prototype :- (</h1>
 
-<script>
-  const sendAjax = (url) => 
-  {
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', url);
-    xhr.setRequestHeader ("Accept", "application/json");
-    xhr.onload = () => handleResponse(xhr);
-    xhr.send();
-  };
+  <div id = "LogIn">
+    <form id="userForm">
+      <label for="username">Username: </label>
+      <input id="nameField" type="text" name="username" v-model="username"/>
+      <label for="password">Password: </label>
+      <input id="passField" type="password" name="password" v-model="password"/>
+    </form>
+    <section>
+      <button id="submitButton" @click='addUser'>Sign Up</button>
+      <button id="userButton" @click='getUser'>Log In</button>
+    </section>
+  </div>
 
-  const handleResponse = (xhr) => 
-  {
-    const response = JSON.parse(xhr.response);
+<nav>
+  <div class="nav nav-tabs" id="nav-tab" role="tablist">
+    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Home</a>
+    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Profile</a>
+    <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Contact</a>
+  </div>
+</nav>
+<div class="tab-content" id="nav-tabContent">
 
-    //Clear the info
-    responseInfo.innerHTML = "";
+  <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+    <section>
+      <h2>Translate the Date</h2>
+      <button @click="getDate">Get the date!</button>
+    </section>
 
-    for(entry in response)
-    {
-      responseInfo.innerHTML = responseInfo.innerHTML + `\n<p>${response[entry]}</p>`;
-    }
-  }
+    <hr>
+    <h2 id = "title">Response:</h2>
+    <section>
+      <p v-for="opt in dateOutput">
+        {{opt}}
+      </p>
+    </section>
+  </div>
 
-  window.onload = () =>
-  {
-    dateButton.onclick = () => 
-    {
-      sendAjax("/getDate");
-      title.innerHTML = "Date:";
-    };		
-    numButton.onclick = () => 
-    {
-      sendAjax("/getNumber?number=" + numInput.value);
-      title.innerHTML = "Number:";
-    };
-  }
-	</script>
 
+  <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+
+  <div class = "widget" id="searchBar">
+    <h5>Starting Time:</h5>
+    <input @input="adjustTime" type="time" id="timeX" name="timeX" v-model = "timeX">
+    <h5>Ending Time:</h5>
+    <input type="time" id="timeY" name="timeY" v-model = "timeY">
+    <h5>Search Term:</h5>
+    <input @input="inputHandler" id="textSearch" v-bind:placeholder="placeholder" v-model="message" type="text" autocomplete=off autofocus maxlength="50" ref="textBox">
+    <button id="getScheduleButton" @click='getSchedule'>Get Schedule</button>
+    <button id="addScheduleButton" @click='addSchedule'>Add to Schedule</button>
+    <button id="postScheduleButton" @click='postSchedule'>Post Schedule</button>
+  </div>
+
+    <hr>
+    <div class ="container-fluid" id = "search">
+      <div id = "innerContainer">
+          <div class="row" id = "searchResults">
+              <div class="col-sm-8">
+                  <h2>Results</h2>
+                  <result-list v-bind:results="schedule" v-bind:status="status" @copy="copyToClipboard"></result-list>
+              <br>
+              </div>
+          </div>
+      </div>
+  </div>
+  
+  </div>
+
+
+
+  <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+
+    <h2>Translate a number</h2>
+    <section>
+      <input type="text" placeholder = "Enter numbers here!" maxlength="5" v-model="numInput"> 
+      <button @click="getNumber" id="numButton">Translate!</button>
+    </section>
+  
+    <hr>
+    <h2 id = "title">Response:</h2>
+    <section>
+      <p v-for="opt in numOutput">
+        {{opt}}
+      </p>
+    </section>
+</div>
+  </div>
 </body>
+  <script src="VueComponents.js"></script>
+  <script src="VueHandler.js"></script>
 </html>
