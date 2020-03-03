@@ -13,13 +13,11 @@ Vue.component('result-list', {
 <tr>
 <th scope="col">Time</th>
 <th scope="col">TO - DO</th>
-<th scope="col">Delete?</th>
 </tr>
 </thead>
 
 <tbody> 
-<tr is="result-list-row" v-for="result in results" v-bind:result="result"  
-@copy="$emit('copy', result.kanji)" @tts-kanji="$emit('tts', result.kanji)">
+<tr is="result-list-row" v-for="result in results" v-bind:result="result">
 </tr>
 </tbody>
 
@@ -37,8 +35,5 @@ Vue.component('result-list-row', {
 `<tr>
 <td>{{result.time}}</td>
 <td>{{result.entry}}</td>
-<td scope="row">
-<button class="widget" @click="$emit('copy',result.kanji)">Copy!</button>
-</td>
 </tr>`,
 });

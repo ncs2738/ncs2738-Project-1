@@ -74,7 +74,7 @@ const getNumber = (request, response, input) => {
   const responseJSON = {};
 
   // Check for get request
-  if (request.methd === 'GET') {
+  if (request.method === 'GET') {
     // Create a counter
     const counter = { counter: 0 };
     // Check if the number's actually good or not

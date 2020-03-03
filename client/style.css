@@ -1,2 +1,80 @@
-button{font-size:1.3em;}
-section{margin:2em 0;}
+body, html
+{
+    background-color: rgb(236, 236, 236);
+    margin:0;
+    padding:0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    align-content: center;
+}
+
+#page
+{
+    padding-top: 10vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: rgb(236, 236, 236);
+    align-content: center;
+    align-self: center;
+    align-items: center;
+    text-align: center;
+}
+
+.container {
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+  }
+
+.contents
+{
+    flex-basis: 40%;
+    background:rgb(65, 71, 77);
+    color:rgb(252, 252, 252);
+    border: 15px black double;
+    border-radius: 10px;
+
+    font-family: 'Jua', sans-serif;
+    font-size: 14pt;
+    width:60%;
+}
+
+.category
+{
+    font-family: 'Jua', sans-serif;
+    font-weight:bold;
+    text-decoration: underline; 
+    font-size: 16pt;
+}
+
+.widget
+{
+    margin-top: 2vh;
+}
+
+h1,h2,h3,h4,h5
+{
+    font-family: 'Jua', sans-serif;
+    font-size:140%;
+}
+
+*
+{
+    font-family: 'Kosugi Maru', sans-serif;
+}
+
+.results
+{
+    font-size: 125%;
+}
+
+button
+{
+    size: 200%;
+}
+
+input{
+    size: 200%;
+}

@@ -3,11 +3,13 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
-  <title>Nick's sad prototype 1</title>	
+  <title>Sched-You-Ler</title>	
   
       <!-- Load required Bootstrap and BootstrapVue CSS -->
+      <link href="style.css" type="text/css" rel="stylesheet">
       <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
       <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css" />
+      <link href="https://fonts.googleapis.com/css?family=Jua|Kosugi+Maru" rel="stylesheet">
       <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   
       <!-- Load polyfills to support older browsers -->
@@ -30,7 +32,7 @@
 
 <body>
   <div id = "page">
-    <h1>Nick's sad prototype :- (</h1>
+    <h1>Sched-You-Ler</h1>
 
   <div id = "LogIn">
     <form id="userForm">
@@ -40,30 +42,64 @@
       <input id="passField" type="password" name="password" v-model="password"/>
     </form>
     <section>
-      <button id="submitButton" @click='addUser'>Sign Up</button>
-      <button id="userButton" @click='getUser'>Log In</button>
-      <h2>{{loginStatus}}</h2>
+      <button class="btn btn-dark" id="submitButton" @click='addUser'>Sign Up</button>
+      <button class="btn btn-dark" id="userButton" @click='getUser'>Log In</button>
+      <h5>{{loginStatus}}</h5>
     </section>
   </div>
 
 <nav>
   <div class="nav nav-tabs" id="nav-tab" role="tablist">
-    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Home</a>
-    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Profile</a>
-    <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Contact</a>
+    <a class="btn btn-outline-secondary active" id="nav-schedule-tab" data-toggle="tab" href="#nav-schedule" role="tab" aria-controls="nav-schedule" aria-selected="true">Schedule</a>
+    <a class="btn btn-outline-secondary" id="nav-date-tab" data-toggle="tab" href="#nav-date" role="tab" aria-controls="nav-date" aria-selected="false">Date</a>
+    <a class="btn btn-outline-secondary" id="nav-numbers-tab" data-toggle="tab" href="#nav-numbers" role="tab" aria-controls="nav-date" aria-selected="false">Numbers</a>
   </div>
 </nav>
 <div class="tab-content" id="nav-tabContent">
 
-  <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+
+  <div class="tab-pane fade show active" id="nav-schedule" role="tabpanel" aria-labelledby="nav-schedule-tab">
+
+  <div class = "widget" id="searchBar">
+    <div>
+    <h5>Starting Time:</h5>
+    <input @input="adjustTime" type="time" id="timeX" name="timeX" v-model = "timeX">
+    <h5>Ending Time:</h5>
+    <input type="time" id="timeY" name="timeY" v-model = "timeY">
+    <h5>Search Term:</h5>
+    <input @input="inputHandler" id="textSearch" v-bind:placeholder="placeholder" v-model="message" type="text" autocomplete=off autofocus maxlength="50" ref="textBox">
+    </div>
+    <div>
+      <br>
+      <button class="btn btn-dark" id="getScheduleButton" @click='getSchedule'>Get Schedule</button>
+      <button class="btn btn-dark" id="addScheduleButton" @click='addSchedule'>Add to Schedule</button>
+      <button class="btn btn-dark" id="postScheduleButton" @click='postSchedule'>Post Schedule</button>
+      <button class="btn btn-dark" id="clearScheduleButton" @click='deleteSchedule'>Clear Schedule</button>
+    </div>
+  </div>
+
+    <hr>
+      <div id = "innerContainer">
+          <div class="row" id = "searchResults">
+              <div class="col-sm-12">
+                  <h2>Results</h2>
+                  <result-list v-bind:results="schedule" v-bind:status="status"></result-list>
+              <br>
+              </div>
+          </div>
+      </div>
+  
+  </div>
+
+  <div class="tab-pane fade" id="nav-date" role="tabpanel" aria-labelledby="nav-date-tab">
     <section>
       <h2>Translate the Date</h2>
-      <button @click="getDate">Get the date!</button>
+      <button class="btn btn-dark" @click="getDate">Get the date!</button>
     </section>
 
     <hr>
-    <h2 id = "title">Response:</h2>
-    <section>
+    <h2>Date:</h2>
+    <section class = "results">
       <p v-for="opt in dateOutput">
         {{opt}}
       </p>
@@ -71,55 +107,25 @@
   </div>
 
 
-  <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-
-  <div class = "widget" id="searchBar">
-    <h5>Starting Time:</h5>
-    <input @input="adjustTime" type="time" id="timeX" name="timeX" v-model = "timeX">
-    <h5>Ending Time:</h5>
-    <input type="time" id="timeY" name="timeY" v-model = "timeY">
-    <h5>Search Term:</h5>
-    <input @input="inputHandler" id="textSearch" v-bind:placeholder="placeholder" v-model="message" type="text" autocomplete=off autofocus maxlength="50" ref="textBox">
-    <button id="getScheduleButton" @click='getSchedule'>Get Schedule</button>
-    <button id="addScheduleButton" @click='addSchedule'>Add to Schedule</button>
-    <button id="postScheduleButton" @click='postSchedule'>Post Schedule</button>
-  </div>
-
-    <hr>
-    <div class ="container-fluid" id = "search">
-      <div id = "innerContainer">
-          <div class="row" id = "searchResults">
-              <div class="col-sm-8">
-                  <h2>Results</h2>
-                  <result-list v-bind:results="schedule" v-bind:status="status" @copy="copyToClipboard"></result-list>
-              <br>
-              </div>
-          </div>
-      </div>
-  </div>
-  
-  </div>
-
-
-
-  <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+  <div class="tab-pane fade" id="nav-numbers"  role="tabpanel" aria-labelledby="nav-numbers-tab">
 
     <h2>Translate a number</h2>
     <section>
       <input type="text" placeholder = "Enter numbers here!" maxlength="5" v-model="numInput"> 
-      <button @click="getNumber" id="numButton">Translate!</button>
+      <button class="btn btn-dark" @click="getNumber" id="numButton">Translate!</button>
     </section>
   
     <hr>
-    <h2 id = "title">Response:</h2>
-    <section>
+    <h2>Number Kanji:</h2>
+    <section class = "results">
       <p v-for="opt in numOutput">
         {{opt}}
       </p>
     </section>
 </div>
-  </div>
+</div>
+</div>
+<script src="VueComponents.js"></script>
+<script src="VueHandler.js"></script>
 </body>
-  <script src="VueComponents.js"></script>
-  <script src="VueHandler.js"></script>
 </html>

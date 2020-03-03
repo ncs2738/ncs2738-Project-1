@@ -48,20 +48,25 @@ const getUsers = (request, response, params) => {
     message: 'Invalid log-in!',
   };
 
-  // Check if there are any users first
-  if (Object.keys(users).length > 0) {
-    // Check if a valid name and password are entered
-    if (params.username === users[params.username].username
-      && params.password === users[params.username].password) {
-      // One was, so return successful
-      responseJSON.message = 'Successfully logged in!';
-      return respondJSON(request, response, 200, responseJSON);
+  if(request.method === "GET")
+  {
+    // Check if there are any users first
+    if (Object.keys(users).length > 0) {
+      // Check if a valid name and password are entered
+      if (params.username === users[params.username].username
+        && params.password === users[params.username].password) {
+        // One was, so return successful
+        responseJSON.message = 'Successfully logged in!';
+        return respondJSON(request, response, 200, responseJSON);
+      }
     }
-  }
-
-  // Invalid login; return bad request
+      // Invalid login; return bad request
   responseJSON.id = 'badRequest';
   return respondJSON(request, response, 400, responseJSON);
+  }
+
+  responseJSON.message = 'Success!';
+  return respondJSON(request, response, 200, responseJSON);
 };
 
 
@@ -107,19 +112,34 @@ const addSchedule = (request, response, body) => {
 
 // Used for getting the user's schedule
 const getSchedule = (request, response, params) => {
-  const responseJSON = {
-    message: 'No schedule found!',
-  };
-
-  // If the user doesn't have a schedule, return a bad request
-  if (!users[params.username].schedule) {
-    responseJSON.id = 'badRequest';
-    return respondJSON(request, response, 400, responseJSON);
+  if(request.method === "GET")
+  {
+    const responseJSON = {
+      message: 'No schedule found!',
+    };
+      //Check if there are any users first
+      if (Object.keys(users).length > 0) 
+      {
+      // If the user doesn't have a schedule, return a bad request
+      if (!users[params.username].schedule) {
+      responseJSON.id = 'badRequest';
+      return respondJSON(request, response, 400, responseJSON);
+    }
+  
+    // The user's got one, so respond successfully.
+    responseJSON.message = 'Schedule found!';
+    responseJSON.schedule = users[params.username].schedule;
+    return respondJSON(request, response, 200, responseJSON);
+      }
+      else
+      {
+            // Invalid login; return bad request
+      responseJSON.id = 'badRequest';
+      return respondJSON(request, response, 400, responseJSON);
+      }
   }
-
-  // The user's got one, so respond successfully.
-  responseJSON.message = 'Schedule found!';
-  responseJSON.schedule = users[params.username].schedule;
+  
+  responseJSON.message = 'Success!';
   return respondJSON(request, response, 200, responseJSON);
 };
 
