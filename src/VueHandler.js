@@ -1,3 +1,9 @@
+/* eslint-disable */
+
+// NOTE: alot of this is my previous code from my translator for typing; I wanted to do more with, but oh... oh my god this project did not work with me.
+//Skip down to the bottom for the AJAX code
+
+
 // Huge JSON object containing all of the Japanese Hirgana and Katakana
 const jsonAlphabet = '{"vowels":{"vChars":["a:","i:","u:","e:","o:"],"hiraVowels":["あ","い","う","え","お"],"kataVowels":["ア","イ","ウ","エ","オ"]},"k":{"vChars":["ka:","ki:","ku:","ke:","ko:"],"yChars":["kya:","kyu:","kyo:"],"hiraVowels":["か","き","く","け","こ"],"hiraYs":["きゃ","きゅ","きょ"],"kataVowels":["カ","キ","ク","ケ","コ"],"kataYs":["キャ","キュ","キョ"]},"g":{"vChars":["ga:","gi:","gu:","ge:","go:"],"yChars":["gya:","gyu:","gyo:"],"hiraVowels":["が","ぎ","ぐ","げ","ご"],"hiraYs":["ぎゃ","ぎゅ","ぎょ"],"kataVowels":["ガ","ギ","グ","ゲ","ゴ"],"kataYs":["ギャ","ギュ","ギョ"]},"s":{"vChars":["sa:","si, shi:","su:","se:","so:"],"yChars":["sya, sha, shya:","syu, shu, shyu:","syo, sho, shyo:"],"hiraVowels":["さ","し","す","せ","そ"],"hiraYs":["しゃ","しゅ","しょ"],"kataVowels":["サ","シ","ス","セ","ソ"],"kataYs":["シャ","シュ","ショ"]},"z":{"vChars":["za:","zi, ji:","zu:","ze:","zo:"],"yChars":["zya, ja, jya:","zyu, ju, jyu:","zyo, jo, jyo:"],"hiraVowels":["ざ","じ","ず","ぜ","ぞ"],"hiraYs":["じゃ","じゅ","じょ"],"kataVowels":["ザ","ジ","ズ","ゼ","ゾ"],"kataYs":["ジャ","ジュ","ジョ"]},"t":{"vChars":["ta:","ti, chi:","tu, tsu:","te:","to:"],"yChars":["tya, cha, chya:","tyu, chu, chyu:","tyo, cho, chyo:"],"hiraVowels":["た","ち","つ","て","と"],"hiraYs":["ちゃ","ちゅ","ちょ"],"kataVowels":["タ","チ","ツ","テ","ト"],"kataYs":["チャ","チュ","チョ"]},"d":{"vChars":["da:","di:","du:","de:","do:"],"yChars":["dya, dza, ja, jya:","dyu, dzu, ju, jyu:","dyo, dzo, jo, jyo:"],"hiraVowels":["だ","ぢ","づ","で","ど"],"hiraYs":["ぢゃ","ぢゅ","ぢょ"],"kataVowels":["ダ","ヂ","ヅ","デ","ド"],"kataYs":["ヂャ","ヂュ","ヂョ"]},"n":{"vChars":["na:","ni:","nu:","ne:","no:"],"yChars":["nya:","nyu:","nyo:"],"nChar":"n:","hiraVowels":["な","に","ぬ","ね","の"],"hiraYs":["にゃ","にゅ","にょ"],"hiraN":"ん","kataVowels":["ナ","ニ","ヌ","ネ","ノ"],"kataYs":["ニャ","ニュ","ニョ"],"kataN":"ン"},"h":{"vChars":["ha:","hi:","hu, fu:","he:","ho:"],"yChars":["hya:","hyu:","hyo:"],"hiraVowels":["は","ひ","ふ","へ","ほ"],"hiraYs":["ひゃ","ひゅ","ひょ"],"kataVowels":["ハ","ヒ","フ","ヘ","ホ"],"kataYs":["ヒャ","ヒュ","ヒョ"]},"b":{"vChars":["ba:","bi:","bu:","be:","bo:"],"yChars":["bya:","byu:","byo:"],"hiraVowels":["ば","び","ぶ","べ","ぼ"],"hiraYs":["びゃ","びゅ","びょ"],"kataVowels":["バ","ビ","ブ","ベ","ボ"],"kataYs":["ビャ","ビュ","ビョ"]},"p":{"vChars":["pa:","pi:","pu:","pe:","po:"],"yChars":["pya:","pyu:","pyo:"],"hiraVowels":["ぱ","ぴ","ぷ","ぺ","ぽ"],"hiraYs":["ぴゃ","ぴゅ","ぴょ"],"kataVowels":["パ","ピ","プ","ペ","ポ"],"kataYs":["ピャ","ピュ","ピョ"]},"m":{"vChars":["ma:","mi:","mu:","me:","mo:"],"yChars":["mya:","myu:","myo:"],"hiraVowels":["ま","み","む","め","も"],"hiraYs":["みゃ","みゅ","みょ"],"kataVowels":["マ","ミ","ム","メ","モ"],"kataYs":["ミャ","ミュ","ミョ"]},"y":{"vChars":["ya:","yu:","yo:"],"hiraYs":["や","ゆ","よ"],"kataYs":["ヤ","ユ","ヨ"]},"r":{"vChars":["ra:","ri:","ru:","re:","ro:"],"yChars":["rya:","ryu:","ryo:"],"hiraVowels":["ら","り","る","れ","ろ"],"hiraYs":["りゃ","りゅ","りょ"],"kataVowels":["ラ","リ","ル","レ","ロ"],"kataYs":["リャ","リュ","リョ"]},"w":{"vChars":["wa:","wo:"],"hiraVowels":["わ","を"],"kataVowels":["ワ","ヲ"]},"special":{"vChars":["a, A:","i, I:","u, U:","e, E:","o, O:"],"kataVowels":["ァ","ィ","ゥ","ェ","ォ"],"kataV":"ヴ","vChar":"V:"},"tsu":{"hiraTsu":"っ","kataTsu":"ッ"},"punctuation":["。","、","ー","「","」","ゝ","ゞ","ヽ","ヾ","々","〜"]}';
 const alphabet = JSON.parse(jsonAlphabet);
@@ -56,41 +62,33 @@ const handler = new Vue(
   {
     el: '#page',
     data:
-        {
-          // ########### V-MODEL VARIABLES ###########
-          username: '',
-          password: '',
-          timeX: '',
-          timeY: '',
-          loggedIn: false, // variable used for seeing if the user is logged in or nor.
-          status: 'Please search for kanji!', // Variable used for displaying the current state of the app
-          numInput: '',
-          numOutput: '',
-          dateOutput: '',
+{
+// ########### NEW SERVER VARIABLES ###########
+  username: '', //Variables for password and username
+  password: '',
+  timeX: '', //Variables for getting the schedule's times
+  timeY: '',
+  loggedIn: false, // variable used for seeing if the user is logged in or nor.
+  status: 'Please search for kanji!', // Variable used for displaying the current state of the app
+  numInput: '', //Get the number searched
+  numOutput: '', //Output it's translations
+  dateOutput: '', //Output for date translations
+  loginStatus: "", //Used for showing the status of the login
+  schedule: [], // Array for holding the current schedule
 
-          // ########### TYPING VARIABLERS ###########
-          placeholder: 'Type here to translate!', // Placeholder text for the textbox
-          message: '', // Variable used for the vue-model
-          characterArray: '', // Variable used for holding the current character array (Either hiragana or Katakana)
-          arrayName: '', // Variable used for holding the current alpahbet array's name (EX: k, s, g, z)
-          textbox: '', // Variable used for holding the direct HTML reference of the textbox being used; Crucial for when typing at a point before the end of the string
-          state: 1, // Variable used for controlling the case checking state
-          stateIndex: 0, // Index used for getting specific character array in the overall alphabet array; EX: if index == 1, the character array is K
-          pos: 0, // Value containing input field position
-          tmpPos: 0, // Temp value used for comparing position
-
-
-          // ########### TYPING VARIABLERS ###########
-          schedule: [], // Array for holding the current schedule
-
-          // ########### TYPING VARIABLERS ###########
-
-        },
-
-    created() {
-      // Set the reference of the textbox's HTML element
-      this.textbox = this.$refs;
-    },
+  // ########### TYPING VARIABLERS ###########
+  placeholder: 'Type here to translate!', // Placeholder text for the textbox
+  message: '', // Variable used for the vue-model
+  characterArray: '', // Variable used for holding the current character array (Either hiragana or Katakana)
+  arrayName: '', // Variable used for holding the current alpahbet array's name (EX: k, s, g, z)
+  textbox: '', // Variable used for holding the direct HTML reference of the textbox being used; Crucial for when typing at a point before the end of the string
+  state: 1, // Variable used for controlling the case checking state
+  stateIndex: 0, // Index used for getting specific character array in the
+  // overall alphabet array; EX: if index == 1, the character array is K
+  pos: 0, // Value containing input field position
+  tmpPos: 0, // Temp value used for comparing position
+  defaultCase: '',
+},
 
     methods:
         {
@@ -98,24 +96,6 @@ const handler = new Vue(
           // The alphabet being typed in is altered whenver the select's option is changed, so this is crucial
           clearText() {
             this.message = '';
-          },
-
-          // NOTE: This is kind of a hack; In order to keep the page's HTML looking nice, I had to move the search button into this vue's div,
-          // while the functionality for the search is completely outside of this vue component.
-
-          // Checks to see a actual message was entered. If so, call the searcher.vue component and search for the term
-          callSearch() {
-            // If the message is valid...
-            if (this.message) {
-              // Reset the placeholder message
-              this.placeholder = 'Type here to translate!';
-              // Search the kanji for the term
-              searcher.setSearch();
-            } else {
-              // Update the placeholder and the table to tell the user to enter a actual term.
-              this.placeholder = 'Please enter a term!';
-              searcher.status = 'Please enter a term in the searchbar!';
-            }
           },
 
           // Handles the textbox's input; Checks where the input is in the textbox, and sets the alphabet, then begins the translation chain
@@ -425,123 +405,126 @@ const handler = new Vue(
             }
           },
 
-          // Used for copying the kanji directly to the user's clipboard
-          copyToClipboard(text) {
-            navigator.clipboard.writeText(text);
-          },
-
-          // Function called (indirectly through the handler vue component) whenver the search button is clicked
-          // Begins the searching process
-          setSearch() {
-            // Clear the results array
-            this.results = [];
-          },
-
+          //&&&&&&&&&&&&&&&&&&&&&&&&&&& CLIENT SIDE CODE: &&&&&&&&&&&&&&&&&&&&&&&&&&& 
+          //SendAjax handls the get methods
           sendAjax(url, destination, flagCheck = false) {
-            console.log('CALLED');
+              //Start a new request
             const xhr = new XMLHttpRequest();
+            //Open a new get form
             xhr.open('GET', url);
             xhr.setRequestHeader('Accept', 'application/json');
+            //Check if the user has logged in
             if (flagCheck) {
               xhr.onload = () => this.handleLogin(xhr, destination);
             } else {
+                //Check normal get requests
               xhr.onload = () => this.handleResponse(xhr, destination);
             }
             xhr.send();
           },
-
+        
+          //Used for handling the user's log-in
           handleLogin(xhr, destination) {
+              //The user has successfully logged in
             if (xhr.status === 200 || xhr.status === 201) {
+                //Remove the login section, and set the login flag to true
               document.getElementById(destination).innerHTML = `Logged in as ${this.username}!`;
               this.loggedIn = true;
             }
-          },
-
-          sendAjax(url, destination, flagCheck = false) {
-            console.log(destination);
-            const xhr = new XMLHttpRequest();
-            xhr.open('GET', url);
-            xhr.setRequestHeader('Accept', 'application/json');
-            if (flagCheck) {
-              xhr.onload = () => this.handleLogin(xhr, destination);
-            } else {
-              xhr.onload = () => this.handleResponse(xhr, destination);
+            else
+            {
+                //They've failed to login
+                this.loginStatus = "That is an invalid log-in! Try a new password or username!"
             }
-            xhr.send();
           },
-
+        
+          //Handles the responses
           handleResponse(xhr, destination) {
+            //Get the response and parse it
             const response = JSON.parse(xhr.response);
-
-            if (destination == 0) {
+            //The response was for the schedule, so...
+            if (destination === 0) {
+                //Clear it
               this.schedule = [];
+              //Read in the JSON for the schedule
               const tmp = response.schedule;
+              //Parse it, and set the schedule to it
               this.schedule = JSON.parse(tmp);
             } else {
+                //The search was either for date or number
               const results = [];
-
-              for (reply in response) {
+        
+              //Loop through and push the entries
+              for (const reply of Object.keys(response)) {
                 results.push(`${response[reply]}`);
               }
-
-              switch (destination) {
-                case 1:
-                  this.numOutput = results;
-                  break;
-
-                case 2:
-                  this.dateOutput = results;
-                  break;
+        
+              ///Update the models; 1 is for numbers, 2 is for dates
+              if (destination === 1) {
+                this.numOutput = results;
+              } else if (destination === 2) {
+                this.dateOutput = results;
               }
             }
           },
-
+        
+          //Send the posts to the server
           sendPost(pathName, formData, destination, flagCheck = false) {
-            console.log('CALLED!');
             const xhr = new XMLHttpRequest();
             xhr.open('POST', pathName);
             xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
             xhr.setRequestHeader('Accept', 'application/json');
-
+        
+            //If the flag is true, the user is logging in
             if (flagCheck) {
+                //Handle the login
               xhr.onload = () => this.handleLogin(xhr, destination);
             } else {
+                //This is a schedule post, so handle it regularly
               xhr.onload = () => this.handleResponse(xhr, destination);
             }
-
+        
             xhr.send(formData);
           },
 
+          //Add users posts a new user; Used for signing up
           addUser() {
             const formData = `username=${this.username}&password=${this.password}`;
             this.sendPost('/addUser', formData, 'LogIn', true);
+            this.loginStatus = "Logging in..."
           },
-
+        
+          //Get users searches through the current existing users to see if there was a valid login
           getUser() {
-            console.log('CALLED!');
             const formData = `/getUsers?username=${this.username}&password=${this.password}`;
             this.sendAjax(formData, 'LogIn', true);
+            this.loginStatus = "Logging in..."
           },
-
+        
+          //Add schedule does not post the schedule, but rather creates a entry in the schedule
           addSchedule() {
-            // Check if all fields have input
+            // Check if the time fields have input
             if (this.timeX && this.timeY && this.message) {
+                //They do, so grab them, and get their values
               const timeA = this.getTime(this.timeX);
               const timeB = this.getTime(this.timeY);
-
+        
+              //timeA is the starting time, and timeB is the ending
               const startTime = timeA[5];
               const endTime = timeB[5];
+              //Flag to see if the new schedule's time was valid
               let valid = true;
-
+        
+              //Check to see if the schedule exists (For safety)
               if (this.schedule) {
+                  //Check to see if the times actually are coherent; you can't have a schedule that starts at a later time than when it ends
                 if (startTime >= endTime) {
                   this.status = 'Invalid time entererd!';
                   valid = false;
                 }
-
+        
+                //Loop through the schedule and check the times; if one overlaps, it's invalid. Can't do 2 things at once.
                 for (let i = 0; i < this.schedule.length; i++) {
-                  console.log(this.schedule[i].startTime);
-                  console.log(startTime);
                   if (this.schedule[i].startTime <= startTime && this.schedule[i].endTime >= endTime) {
                     this.status = 'That time slot is already taken!';
                     valid = false;
@@ -549,7 +532,8 @@ const handler = new Vue(
                     this.status = '';
                   }
                 }
-
+        
+                //There's no invalid entries; create a new entry
                 if (valid) {
                   const entry = {
                     startTime,
@@ -557,32 +541,30 @@ const handler = new Vue(
                     time: `${timeA[0]}:${timeA[4]} ${timeA[2]} - ${timeB[0]}:${timeB[4]} ${timeB[2]}`,
                     entry: this.message,
                   };
-
+        
+                  //Push it onto the schedule, and sort it
                   this.schedule.push(entry);
                   this.schedule.sort((a, b) => a.startTime - b.startTime);
                 }
               }
             }
           },
-
+        
+          //Get the user's previous schedule
           getSchedule() {
             const formData = `/getSchedule?username=${this.username}`;
             this.sendAjax(formData, 0, false);
           },
-
+        
+          //Post your current schedule to the server and save it.
           postSchedule() {
-            console.log(this.schedule);
             const jsonSchedule = JSON.stringify(this.schedule);
             const formData = `username=${this.username}&schedule=${jsonSchedule}`;
             this.sendPost('/addSchedule', formData, 0, false);
           },
-
-          sortSchedule(startTime) {
-            return function (x, y) {
-              return ((x[startTime] === y[startTime]) ? 0 : ((x[startTime] > y[startTime]) ? 1 : -1));
-            };
-          },
-
+        
+          //Takes the time inputs and finds if they are AM or PM
+          //Also turns the times from strings into numbers                  
           getTime(time) {
             const [strHour, strMin] = time.split(':');
             hour = parseInt(strHour, 10);
@@ -594,17 +576,20 @@ const handler = new Vue(
 
             return [hour, min, midday, strHour, strMin, scheduleTime];
           },
-
+        
+          //Used for getting the number translations
           getNumber() {
             const formData = `/getNumber?number=${this.numInput}`;
             this.sendAjax(formData, 1, false);
           },
-
+        
+          //Used for getting the date
           getDate() {
             const formData = '/getDate';
             this.sendAjax(formData, 2, false);
           },
 
+          //Used for checking if the time is past or before midday
           getMidday(hour) {
             if (hour >= 12) {
               return 'PM';
@@ -613,9 +598,17 @@ const handler = new Vue(
             return 'AM';
           },
 
+          //Updates 2nd time input after the first is adjusted
           adjustTime() {
             this.timeY = this.timeX;
           },
+
+        //used for sorting the schedule
+        sortSchedule(startTime) {
+            return function (x, y) {
+                return ((x[startTime] === y[startTime]) ? 0 : ((x[startTime] > y[startTime]) ? 1 : -1));
+            };
         },
+    },
   },
 );
